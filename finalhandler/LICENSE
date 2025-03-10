@@ -1,22 +1,219 @@
-(The MIT License)
+Imports System.Data.OleDb
+Public Class StudMast
+    Dim b As New Student
+    Dim ds As New DataSet
+    Dim inc As Integer
 
-Copyright (c) 2014-2022 Douglas Christopher Wilson <doug@somethingdoug.com>
+    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        FillBookData()
+    End Sub
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+    Private Sub FillBookData()
+        ds = b.Display("SELECT * FROM Book_Issue ORDER BY Book_no")
+        DataGridView1.DataSource = ds.Tables(0)
+    End Sub
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+    Private Sub btnInsert_Click(sender As Object, e As EventArgs) Handles btnInsert.Click
+        b.IUD("INSERT INTO Book_Issue(Book_no, Book_name, Class, Roll_no, Issue_date, Return_date) VALUES (" _
+              & txtBookNo.Text & ",'" & txtBookName.Text & "','" & txtClass.Text & "'," _
+              & txtRollNo.Text & ",'" & dtpIssueDate.Text & "','" & dtpReturnDate.Text & "')")
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+        FillBookData()
+        ClearControls()
+    End Sub
+
+    Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
+        b.IUD("UPDATE Book_Issue SET Book_name='" & txtBookName.Text & "', Class='" & txtClass.Text & "', " _
+              & "Roll_no=" & txtRollNo.Text & ", Issue_date='" & dtpIssueDate.Text & "', Return_date='" & dtpReturnDate.Text & "' " _
+              & "WHERE Book_no=" & txtBookNo.Text)
+
+        FillBookData()
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        b.IUD("DELETE FROM Book_Issue WHERE Book_no=" & txtBookNo.Text)
+
+        FillBookData()
+    End Sub
+
+    Private Sub btnShowIssuedBooks_Click(sender As Object, e As EventArgs) Handles btnShowIssuedBooks.Click
+        ds = b.Display("SELECT * FROM Book_Issue WHERE Roll_no=" & txtRollNo.Text)
+        DataGridView1.DataSource = ds.Tables(0)
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+        inc = e.RowIndex
+        txtBookNo.Text = DataGridView1.Rows(inc).Cells(0).Value
+        txtBookName.Text = DataGridView1.Rows(inc).Cells(1).Value
+        txtClass.Text = DataGridView1.Rows(inc).Cells(2).Value
+        txtRollNo.Text = DataGridView1.Rows(inc).Cells(3).Value
+        dtpIssueDate.Text = DataGridView1.Rows(inc).Cells(4).Value
+        dtpReturnDate.Text = DataGridView1.Rows(inc).Cells(5).Value
+    End Sub
+
+    Private Sub ClearControls()
+        txtBookNo.Text = ""
+        txtBookName.Text = ""
+        txtClass.Text = ""
+        txtRollNo.Text = ""
+        dtpIssueDate.Value = DateTime.Now
+        dtpReturnDate.Value = DateTime.Now
+    End Sub
+
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+        Me.Close()
+    End Sub
+End Class
+->Student.vb
+Imports System.Data.OleDb
+Public Class Student
+    Dim cn As New OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='C:\Users\windows 10\source\repos\StudentMaster\BookMast.accdb'")
+    Dim cm As OleDbCommand
+    Dim da As OleDbDataAdapter
+    Dim ds As New DataSet
+
+    Public Sub IUD(ByVal str As String)
+        If cn.State = ConnectionState.Closed Then
+            cn.Open()
+        End If
+
+        cm = New OleDbCommand(str, cn)
+        cm.ExecuteNonQuery()
+
+        cn.Close()
+    End Sub
+
+    Public Function Display(ByVal str As String) As DataSet
+        da = New OleDbDataAdapter(str, cn)
+        ds.Tables.Clear()
+        da.Fill(ds)
+        Return ds
+    End Function
+End Class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Imports System.Data.OleDb
+Public Class Form1
+    Dim s1 As New Student
+    Dim cm As OleDbCommand
+    Dim ds As New DataSet
+    Dim gender As String = ""
+    Dim inc As Integer
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        FillStudData()
+    End Sub
+
+    Private Sub FillStudData()
+        ds = s1.Display("select * from StudMast order by Rno")
+        DataGridView1.DataSource = ds.Tables(0)
+    End Sub
+
+    Private Sub btnInsert_Click(sender As Object, e As EventArgs) Handles btnInsert.Click
+        If rbMale.Checked Then
+            gender = "Male"
+        ElseIf rbFemale.Checked Then
+            gender = "Female"
+        End If
+
+        s1.IUD("insert into StudMast (Rno, SName, Phno, Address, Email, Gender, Course) values (" + txtRno.Text + ",'" +
+               txtName.Text + "','" + txtPhno.Text + "','" + txtAddr.Text + "','" + txtEmail.Text + "','" + gender +
+               "','" + cmCourse.Text + "')")
+        FillStudData()
+        ClearControls()
+    End Sub
+
+    Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
+        If rbMale.Checked Then
+            gender = "Male"
+        ElseIf rbFemale.Checked Then
+            gender = "Female"
+        End If
+
+        s1.IUD("update StudMast set SName='" & txtName.Text & "', Address='" & txtAddr.Text & "', Phno='" & txtPhno.Text & "', Email='" & txtEmail.Text & "', Gender='" & gender & "', Course='" & cmCourse.Text & "' where SID=" & txtSID.Text)
+
+        FillStudData()
+        ClearControls()
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        s1.IUD("delete from StudMast where SID=" + txtSID.Text)
+        FillStudData()
+        ClearControls()
+    End Sub
+
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnFilter_Click(sender As Object, e As EventArgs) Handles btnFilter.Click
+        FilterData.Show()
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, ByVal e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+        inc = e.RowIndex
+        txtSID.Text = DataGridView1.Rows(inc).Cells(0).Value
+        txtRno.Text = DataGridView1.Rows(inc).Cells(1).Value
+        txtName.Text = DataGridView1.Rows(inc).Cells(2).Value
+        txtPhno.Text = DataGridView1.Rows(inc).Cells(3).Value
+        txtAddr.Text = DataGridView1.Rows(inc).Cells(4).Value
+        txtEmail.Text = DataGridView1.Rows(inc).Cells(5).Value
+        gender = DataGridView1.Rows(inc).Cells(6).Value
+        If gender = "Male" Then
+            rbMale.Checked = True
+        ElseIf gender = "Female" Then
+            rbFemale.Checked = True
+        End If
+        cmCourse.Text = DataGridView1.Rows(inc).Cells(7).Value
+    End Sub
+
+    Private Sub ClearControls()
+        txtSID.Text = ""
+        txtRno.Text = ""
+        txtRno.Enabled = True
+        txtName.Text = ""
+        txtPhno.Text = ""
+        txtAddr.Text = ""
+        txtEmail.Text = ""
+        rbMale.Checked = False
+        rbFemale.Checked = False
+        cmCourse.Text = ""
+    End Sub
+End Class
+->Student.vb
+Imports System.Data.OleDb
+Public Class Student
+    Dim cn As New OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='C:\Users\windows 10\source\repos\StudMast\Database1.accdb'")
+    Dim cm As OleDbCommand
+    Dim da As OleDbDataAdapter
+    Dim ds As New DataSet
+
+    Public Sub IUD(ByVal str As String)
+        If cn.State = ConnectionState.Closed Then
+            cn.Open()
+        End If
+
+        cm = New OleDbCommand(str, cn)
+        cm.ExecuteNonQuery()
+
+        cn.Close()
+    End Sub
+
+    Public Function Display(ByVal str As String) As DataSet
+        da = New OleDbDataAdapter(str, cn)
+        ds.Tables.Clear()
+        da.Fill(ds)
+        Return ds
+    End Function
+End Class
