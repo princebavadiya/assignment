@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+    <item>
+        <id>1</id>
+        <category>Starter</category>
+        <itemnum>201</itemnum>
+        <ingredient>Paneer, Capsicum, Spices</ingredient>
+        <price>220</price>
+        <quantity>1</quantity>
+    </item>
+    <item>
+        <id>2</id>
+        <category>Main Course</category>
+        <itemnum>202</itemnum>
+        <ingredient>Paneer, Tomato, Spices</ingredient>
+        <price>300</price>
+        <quantity>1</quantity>
+    </item>
+    <item>
+        <id>3</id>
+        <category>Beverage</category>
+        <itemnum>203</itemnum>
+        <ingredient>Milk, Chocolate</ingredient>
+        <price>150</price>
+        <quantity>1</quantity>
+    </item>
+    <item>
+        <id>4</id>
+        <category>Dessert</category>
+        <itemnum>204</itemnum>
+        <ingredient>Milk, Sugar, Nuts</ingredient>
+        <price>200</price>
+        <quantity>1</quantity>
+    </item>
+    <item>
+        <id>5</id>
+        <category>Fast Food</category>
+        <itemnum>205</itemnum>
+        <ingredient>Bread, Cheese, Vegetables</ingredient>
+        <price>180</price>
+        <quantity>1</quantity>
+    </item>
+</items>

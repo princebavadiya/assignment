@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item-Menu</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        background-color: #3c488d;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        background: url('/bgchef.jpg');
+        background-size: cover;
+    }
+    #main {
+        width: 90%;
+        margin: auto;
+        display: flex;
+        padding: 10px 20px;
+    }
+    #logo {
+        border-radius: 20px;
+    }
+    div {
+        width: fit-content;
+    }
+    .nav-item {
+        height: fit-content;
+        margin: auto 20px;
+    }
+    a {
+        text-decoration: none;
+        font-weight: bold;
+        color: white;
+    }
+    a:hover {
+        text-decoration: underline 5px red;
+        text-underline-offset: 7px;
+        color: red;
+        transition: 1s color;
+    }
+    .flex {
+        width: 100%;
+        height: 650px;
+        display: flex;
+        justify-content: space-evenly;
+        font-size: larger;
+    }
+    h1 {
+        text-align: center;
+    }
+    table {
+        background-color: white ; 
+        background-size: cover;
+    }
+    footer {
+        position:relative;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 50px;
+    }
+    footer p {
+        display: inline;
+        margin: 0;
+    }
+</style>
+<script>
+    function load() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.status == 200) {
+                loaddata(this);
+            }
+        };
+        xhttp.open('GET', 'menu_item.xml', true);
+        xhttp.send();
+    }
+
+    function loaddata(xml) {
+        var xmlDoc = xml.responseXML;
+        var items = xmlDoc.getElementsByTagName("item");
+        var table = `<table border='1' style='width:80%; text-align:center;'>
+                        <tr>
+                            <th>Item</th> <th>Category</th> <th>Item Number</th>
+                            <th>Ingredient</th> <th>Price</th> <th>Quantity</th>
+                        </tr>`;
+
+        for (let i = 0; i < items.length; i++) {
+            table += `<tr>
+                        <td>${items[i].getElementsByTagName("id")[0].textContent}</td>
+                        <td>${items[i].getElementsByTagName("category")[0].textContent}</td>
+                        <td>${items[i].getElementsByTagName("itemnum")[0].textContent}</td>
+                        <td>${items[i].getElementsByTagName("ingredient")[0].textContent}</td>
+                        <td>${items[i].getElementsByTagName("price")[0].textContent}</td>
+                        <td>${items[i].getElementsByTagName("quantity")[0].textContent}</td>
+                    </tr>`;
+        }
+        table += '</table>';
+        document.getElementById("table").innerHTML = table;
+    }
+</script>
+
+</script>
+<body onload="load()">
+    <div id="main">
+        <img id="logo" src="/logo.avif" alt="" height="70px" width="70px">
+        <div class="nav-item"><a href="home.html">Home</a></div>
+        <div class="nav-item"><a href="about.html">About</a></div>
+        <div class="nav-item"><a href="contact.html">Contact</a></div>
+        <div class="nav-item"><a href="chef.html">Chef</a></div>
+        <div class="nav-item"><a href="items.html">Menu</a></div>
+    </div>
+    <h1>Menu - Items</h1>
+    <div class="flex" id="table" style="margin-top: 20px;">
+    </div>
+    <footer style="background-color: black; color: #fff; text-align: center; height: 70px; width: 100%;">
+        <p>&copy; 2025 Your Restaurant Name. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
