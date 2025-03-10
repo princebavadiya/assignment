@@ -123,3 +123,133 @@ public class linkli {
    }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+public class SinglyCircularLinkedList {
+    public class Node {
+    int data;
+    Node next;
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+    Node head;
+	public void create(int data) {
+        head = new Node(data);
+        head.next = head;
+        System.out.println("Circular linked list created with head node: " + data);
+    }
+	public void insert(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            head.next = head;
+        } else {
+            Node temp = head;
+            while (temp.next != head) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+            newNode.next = head;
+        }
+        System.out.println("Node inserted: " + data);
+    }
+    public void delete(int data) {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        if (head.data == data) {
+            if (head.next == head) {
+                head = null;
+            } else {
+                Node temp = head;
+                while (temp.next != head) {
+                    temp = temp.next;
+                }
+                temp.next = head.next;
+                head = head.next;
+            }
+            System.out.println("Node deleted: " + data);
+            return;
+        }
+        Node temp = head;
+        while (temp.next != head && temp.next.data != data) {
+            temp = temp.next;
+        }
+        if (temp.next == head) {
+            System.out.println("Node not found: " + data);
+        } else {
+            temp.next = temp.next.next;
+            System.out.println("Node deleted: " + data);
+        }
+    }
+	public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node temp = head;
+        do {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
+        } while (temp != head);
+        System.out.println("(back to head)");
+    }
+	public static void main(String[] args) {
+        SinglyCircularLinkedList list = new SinglyCircularLinkedList();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Create Circular Linked List");
+            System.out.println("2. Insert Node");
+            System.out.println("3. Delete Node");
+            System.out.println("4. Display Circular Linked List");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter data for the head node: ");
+                    int headData = scanner.nextInt();
+                    list.create(headData);
+                    break;
+                case 2:
+                    System.out.print("Enter data to insert: ");
+                    int insertData = scanner.nextInt();
+                    list.insert(insertData);
+                    break;
+                case 3:
+                    System.out.print("Enter data to delete: ");
+                    int deleteData = scanner.nextInt();
+                    list.delete(deleteData);
+                    break;
+                case 4:
+                    list.display();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
+
+
