@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form Validation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .error { color: red; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <form id="signupForm">
+        <label>Mobile Number:</label>
+        <input type="text" id="mobile">
+        <span class="error" id="mobileError"></span>
+        <br><br>
+
+        <label>Password:</label>
+        <input type="password" id="password">
+        <span class="error" id="passwordError"></span>
+        <br><br>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $("#signupForm").submit(function (event) {
+                event.preventDefault();
+                $(".error").text(""); // Clear errors
+
+                var mobile = $("#mobile").val().trim();
+                var password = $("#password").val().trim();
+                var isValid = true;
+
+                if (!/^\d{10}$/.test(mobile)) {
+                    $("#mobileError").text("Enter a valid 10-digit number.");
+                    isValid = false;
+                }
+
+                if (!/(?=.*[A-Z])(?=.*\d).{6,}/.test(password)) {
+                    $("#passwordError").text("Min 6 chars, 1 uppercase, 1 number.");
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    alert("Form submitted!");
+                    $("#signupForm")[0].reset(); // Clear form
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
