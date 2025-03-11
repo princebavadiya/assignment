@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restuarant</title>
+</head>
+<style>
+    body {
+        background-color: #3c488d;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        background: url('images/owner.jpg');
+        background-size: cover;
+        margin: 0;
+    }
+    #main {
+        width: 100%;
+        margin: auto;
+        display:flex;
+        padding: 10px 20px;
+        background-color: antiquewhite;
+    }
+    #logo {
+        border-radius: 20px;
+    }
+    div {
+        width: fit-content;
+    }
+    .nav-item {
+        height: fit-content;
+        margin: auto 20px;
+    }
+    a {
+        text-decoration: none;
+        font-weight: bold;
+        color: black;
+        font-size: 22px;
+    }
+    a:hover {
+        text-decoration: underline 5px rgba(174, 255, 0, 0.767);
+        text-underline-offset: 7px;
+        color: yellow;
+        transition:color 1s ease-in-out;
+    }
+    #main-food {
+        border-radius: 20%;
+        filter: drop-shadow(0px 0px 50px #fff);
+        animation: rotate 30s linear 0s infinite normal none running;
+    }
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }     
+    .flex {
+        width: 100%;
+        height: 700px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .text-contain {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-weight: bold;
+        font-size: 50px;
+        color: orange;
+    }
+    h3 {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    footer {
+        position:relative;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 70px;
+    }
+    footer p {
+        display: inline;
+        margin: 0;
+    }
+</style>
+<body>
+    <div id="main">
+        <img id="logo" src="/images/logo.jpg" alt="" height="70px" width="70px">
+        <div class="nav-item"><a href="home.html">Home</a></div>
+        <div class="nav-item"><a href="about.html">About</a></div>
+        <div class="nav-item"><a href="contact.html">Contact</a></div>
+        <div class="nav-item"><a href="chef.html">Chef</a></div>
+        <div class="nav-item"><a href="items.html">Menu</a></div>
+    </div>
+    <div class="flex">
+        <div class="text-contain">
+            <h1>Enjoy Our <br>
+                Delicious Meal </h1>
+
+                <div class="text-contain">
+                    <h1>Enjoy Our <br> Delicious Meal </h1>
+                    <h3> Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. <br> Aliqu diam amet diam et eos. Clita erat 	ipsum <br> et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet </h3>
+                </div>
+             </div>
+        <div class="text-contain">
+            <img id="main-food" src="/images/food1.jpg" alt="" height="500px" width="500px">
+        </div>
+    </div>
+    <footer style="background-color: black; color: #fff; text-align: center; height: 70px; width: 100%;">
+        <p>&copy; 2025 Your Restaurant Name. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
